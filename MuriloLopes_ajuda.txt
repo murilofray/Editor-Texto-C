@@ -1,0 +1,52 @@
+=============================================================
+			MANUAL
+=============================================================
+
+MANUAL:
+
+F1: Manual:
+   - Pressione a tecla F1 para abrir o manual.
+
+F2: Salvar Texto
+   - Use F2 para salvar as informações inseridas em um arquivo de texto.
+
+F10: Carregar Texto Salvo
+   - Pressione F10 para abrir um arquivo de texto.
+
+F12: Informações do Aluno
+   - F12 exibirá O prontuário, nome, curso e ano de ingresso do aluno.
+
+ESC: Sair ou Voltar
+   - Pressione Esc para sair do programa.
+   - Durante a leitura do manual ou informações do aluno, Esc volta à tela anterior.
+
+Setas: Navegação
+   - Use as setas para se mover pelo texto.
+   - Preste atenção nos finais das frases ao navegar.
+
+Insert: Modo de Edição 
+   - Insira ou sobrescreva texto ao pressionar a tecla Insert.
+   - Alternar entre modos é possível pressionando Insert novamente.
+
+Page Up: Páginas Acima
+   - Page Up leva à página anterior.
+
+Page Down: Páginas seguinte
+   - Page Down leva à página seguinte.
+
+Home: Início da Linha
+    - Home coloca o cursor no início da linha.
+
+End:  Fim da Linha
+    - End move o cursor para o final da linha.
+
+Delete: Apagar
+    - Delete apaga o conteúdo sob o cursor.
+
+Backspace: Retroceder
+    - Backspace remove o caractere anterior ao cursor.
+
+Enter: Nova Linha
+    - O texto à frente é movido para a nova linha, e uma linha em branco é inserida se necessário.
+
+=============================================================
