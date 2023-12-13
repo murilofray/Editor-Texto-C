@@ -7,6 +7,46 @@
 #include "MuriloLopesTela.h"
 #include "MuriloLopesEstrutura.h"
 
+void teste(LINHA **aux, LINHA *linha)
+{
+    LINHA *aux2;
+    aux2 = *aux;
+    while(cheia_coluna(&(aux2->coluna)) && aux2->coluna.tam_logico != -2){
+        aux2 = aux2->next;
+    }
+    if(aux2->coluna.tam_logico == -2)
+    {
+        criar_nova_linha_na_posicao(linha,linha->num_linhas+1);
+        aux2 = linha->back;
+    }
+    while(aux2 != *aux)
+    {
+        inserir_posicao_coluna(&(aux2->coluna), aux2->back->coluna.caracter[aux2->back->coluna.tam_logico],0);
+        remover_posicao_coluna(&(aux2->back->coluna),aux2->back->coluna.tam_logico);
+        aux2 = aux2->back;
+    }
+}
+
+void teste2(LINHA **aux, LINHA *linha)
+{
+    LINHA *aux2;
+    aux2 = *aux;
+    while(cheia_coluna(&(aux2->coluna)) && aux2->coluna.tam_logico != -2){
+        aux2 = aux2->next;
+    }
+    if(aux2->coluna.tam_logico == -2)
+    {
+        criar_nova_linha_na_posicao(linha,linha->num_linhas+1);
+        aux2 = linha->back;
+    }
+    while(aux2->back != *aux)
+    {
+        inserir_posicao_coluna(&(aux2->coluna), aux2->back->coluna.caracter[aux2->back->coluna.tam_logico],0);
+        remover_posicao_coluna(&(aux2->back->coluna),aux2->back->coluna.tam_logico);
+        aux2 = aux2->back;
+    }
+}
+
 void teclas_especiais(LINHA *linha, LINHA **aux, wchar_t caracter, CONTROLADOR *controlador)
 {
     setlocale(LC_ALL, "Portuguese");
@@ -42,7 +82,7 @@ void teclas_especiais(LINHA *linha, LINHA **aux, wchar_t caracter, CONTROLADOR *
         meu_gotoxy(controlador->posicao_atual,controlador->linha_atual);
         break;
     case 71: //HOME
-        meu_gotoxy(controlador->linha_atual, 0);
+        meu_gotoxy(0, controlador->linha_atual);
         controlador->posicao_atual = 0;
         break;
     case 72: // CIMA
@@ -113,7 +153,8 @@ void teclas_especiais(LINHA *linha, LINHA **aux, wchar_t caracter, CONTROLADOR *
             meu_gotoxy(controlador->posicao_atual,controlador->linha_atual);
             return;
         }
-        if(controlador->linha_atual < linha->num_linhas){
+        if(controlador->linha_atual < linha->num_linhas)
+        {
             (*aux) = (*aux)->next;
             controlador->posicao_atual = 0;
             controlador->linha_atual++;
@@ -166,8 +207,30 @@ void teclas_especiais(LINHA *linha, LINHA **aux, wchar_t caracter, CONTROLADOR *
         break;
 
     case 83: // DELETE
-        ///sei que ta errado mais funciona faltou validar
-        remover_posicao_coluna(&((*aux)->coluna), controlador->posicao_atual);
+        if(controlador->posicao_atual <= (*aux)->coluna.tam_logico)
+        {
+            remover_posicao_coluna(&((*aux)->coluna), controlador->posicao_atual);
+        }
+        else if(controlador->linha_atual < linha->num_linhas)
+        {
+            if(cheia_coluna(&(*aux)->coluna))
+            {
+                remover_posicao_coluna(&(*aux)->next->coluna,0);
+            }
+            else
+            {
+                while((*aux)->next->coluna.tam_logico >= 0 && !cheia_coluna(&(*aux)->coluna))
+                {
+                    inserir_posicao_coluna(&(*aux)->coluna, (*aux)->next->coluna.caracter[0],(*aux)->coluna.tam_logico+1);
+                    remover_posicao_coluna(&(*aux)->next->coluna,0);
+                }
+                controlador->posicao_atual = (*aux)->coluna.tam_logico+1;
+            }
+            if((*aux)->next->coluna.tam_logico < 0)
+            {
+                remove_linha_posicao(linha, controlador->linha_atual+1);
+            }
+        }
         system("cls");
         exibir_todas_linhas(linha);
         meu_gotoxy(controlador->posicao_atual,controlador->linha_atual);
@@ -228,70 +291,102 @@ void teclas_ascii(LINHA *linha, LINHA **aux, wchar_t caracter, CONTROLADOR *cont
     case 8: //BACKSPACE
         if(controlador->linha_atual > 0 || controlador->posicao_atual > 0)
         {
-            if(controlador->linha_atual > 0 && controlador->linha_atual == 0)
+            if(controlador->linha_atual > 0 && controlador->posicao_atual == 0)
             {
                 (*aux) = (*aux)->back;
-                remove_linha_posicao(linha, controlador->linha_atual);
-                controlador->posicao_atual = (*aux)->coluna.tam_logico-1;
-                controlador->linha_atual--;
-                system("cls");
-                exibir_todas_linhas(linha);
-                meu_gotoxy(controlador->posicao_atual,controlador->linha_atual);
+                if((*aux)->coluna.tam_logico == -1)
+                {
+                    remove_linha_posicao(linha, controlador->linha_atual);
+                    controlador->posicao_atual = (*aux)->coluna.tam_logico+1;
+                    controlador->linha_atual--;
+                }
+                else
+                {
+                    while((*aux)->next->coluna.tam_logico >= 0 && !cheia_coluna(&(*aux)->coluna))
+                    {
+                        inserir_posicao_coluna(&(*aux)->coluna, (*aux)->next->coluna.caracter[0],(*aux)->coluna.tam_logico+1);
+                        remover_posicao_coluna(&(*aux)->next->coluna,0);
+                    }
+                    if((*aux)->next->coluna.tam_logico < 0)
+                    {
+                        remove_linha_posicao(linha, controlador->linha_atual);
+                    }
+                    controlador->posicao_atual = (*aux)->coluna.tam_logico+1;
+                    controlador->linha_atual--;
+                }
             }
             else
             {
                 controlador->posicao_atual--;
                 remover_posicao_coluna(&((*aux)->coluna), controlador->posicao_atual);
-                system("cls");
-                exibir_todas_linhas(linha);
-                meu_gotoxy(controlador->posicao_atual,controlador->linha_atual);
             }
-        }
-        break;
-    default:
-        if(controlador->insert == -1)
-        {
             system("cls");
-            if(controlador->posicao_atual >= 74 || (*aux)->coluna.tam_logico >= TAM - 1)
-            {
-                controlador->linha_atual++;
-                criar_nova_linha_na_posicao(linha,controlador->linha_atual);
-                controlador->posicao_atual = 0;
-                (*aux) = (*aux)->next;
-            }
-
-            inserir_posicao_coluna(&((*aux)->coluna), caracter, controlador->posicao_atual);
-            controlador->posicao_atual++;
             exibir_todas_linhas(linha);
             meu_gotoxy(controlador->posicao_atual,controlador->linha_atual);
         }
-        else
+        break;
+    case 9: //TAB
+        i = 0;
+        while(!cheia_coluna(&(*aux)->coluna) && i<3)
         {
-            if(controlador->posicao_atual <= (*aux)->coluna.tam_logico)
+            inserir_posicao_coluna(&(*aux)->coluna,' ',controlador->posicao_atual);
+            controlador->posicao_atual++;
+            i++;
+        }
+        system("cls");
+        exibir_todas_linhas(linha);
+        meu_gotoxy(controlador->posicao_atual,controlador->linha_atual);
+        break;
+    default:
+        if(caracter >= 32 && caracter <= 255 && caracter != 173 && (caracter > 160 ||  caracter < 127))
+        {
+            ///ARRUMAR ISSO
+            if(controlador->insert == -1)
             {
-                (*aux)->coluna.caracter[controlador->posicao_atual] = caracter;
+                system("cls");
+                if(controlador->posicao_atual >= 74)
+                {
+                    controlador->linha_atual++;
+                    teste2(aux,linha);
+                    controlador->posicao_atual = 0;
+                    (*aux) = (*aux)->next;
+                }
+                else
+                    teste(aux,linha);
+                inserir_posicao_coluna(&((*aux)->coluna), caracter, controlador->posicao_atual);
+                controlador->posicao_atual++;
                 exibir_todas_linhas(linha);
+                meu_gotoxy(controlador->posicao_atual,controlador->linha_atual);
             }
             else
             {
                 system("cls");
-                if(controlador->posicao_atual >= 74 || (*aux)->coluna.tam_logico >= TAM - 1)
+                if(controlador->posicao_atual <= (*aux)->coluna.tam_logico)
                 {
-                    controlador->linha_atual++;
-                    criar_nova_linha_na_posicao(linha,controlador->linha_atual);
-                    controlador->posicao_atual = 0;
-                    (*aux) = (*aux)->next;
+                    (*aux)->coluna.caracter[controlador->posicao_atual] = caracter;
+                    controlador->posicao_atual++;
+                    exibir_todas_linhas(linha);
+                }
+                else
+                {
+                    if(controlador->posicao_atual >= 74 || (*aux)->coluna.tam_logico >= TAM - 1)
+                    {
+                        controlador->linha_atual++;
+                        criar_nova_linha_na_posicao(linha,controlador->linha_atual);
+                        controlador->posicao_atual = 0;
+                        (*aux) = (*aux)->next;
+                    }
+
+                    inserir_posicao_coluna(&((*aux)->coluna), caracter, controlador->posicao_atual);
+                    controlador->posicao_atual++;
+                    exibir_todas_linhas(linha);
+                    meu_gotoxy(controlador->posicao_atual,controlador->linha_atual);
                 }
 
-                inserir_posicao_coluna(&((*aux)->coluna), caracter, controlador->posicao_atual);
-                controlador->posicao_atual++;
-
-                exibir_todas_linhas(linha);
-                meu_gotoxy(controlador->posicao_atual,controlador->linha_atual);
             }
-
         }
     }
+    meu_gotoxy(controlador->posicao_atual,controlador->linha_atual);
 }
 
 

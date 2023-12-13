@@ -154,12 +154,12 @@ void exibir_todas_linhas(LINHA *linha) {
         return;
     aux = linha->next;
     while (aux->coluna.tam_logico != -2) {
-        meu_gotoxy(0, numeroLinha);
         exibir_coluna(&(aux->coluna));
         aux = aux->next;
         printf("\n");
         numeroLinha++;
     }
+
 }
 
 void limpar_estrutura(LINHA *linha) {
