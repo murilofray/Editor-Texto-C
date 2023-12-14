@@ -21,8 +21,7 @@ void main()
     //crio a primeira linha
     criar_nova_linha_na_posicao(linha,0);
     aux = linha->next;
-    meu_gotoxy(0,0);
-
+    meu_gotoxy(&controlador);
     do
     {
         caracter = _getwch();

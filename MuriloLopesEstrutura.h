@@ -7,7 +7,6 @@
 #include<string.h>
 #include<conio.h>
 #define TAM 74
-#include "MuriloLopesTela.h"
 
 ///CRIANDO STRUCTS
 

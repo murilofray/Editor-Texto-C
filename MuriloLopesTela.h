@@ -1,15 +1,15 @@
 #ifndef tela_H
 #define tela_H
-
+#include "MuriloLopesEstrutura.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
 
-void meu_gotoxy(int x, int y)
+void meu_gotoxy(CONTROLADOR *controlador)
 {
     COORD coord;
-    coord.X = x;
-    coord.Y = y;
+    coord.X = controlador->posicao_atual;
+    coord.Y = controlador->linha_atual;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 

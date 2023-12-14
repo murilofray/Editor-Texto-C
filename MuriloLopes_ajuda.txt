@@ -49,6 +49,4 @@ Backspace: Retroceder
 Enter: Nova Linha
     - O texto à frente é movido para a nova linha, e uma linha em branco é inserida se necessário.
 
-CTRL + V: Cola o texto salvo na área de transferência.
-
 =============================================================
