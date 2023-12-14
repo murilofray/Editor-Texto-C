@@ -139,8 +139,41 @@ void info_aluno()
     printf("Nome: Murilo Lopes Fray de Oliveira\n");
     printf("Curso: Bacharelado em Ciência da Computação\n");
     printf("Ano de Ingresso: 2021\n");
+    printf("Aperte ESC para sair\n");
 }
 
+void rearranjar_texto(LINHA **aux, LINHA *linha, CONTROLADOR controlador)
+{
+    LINHA *aux2;
+    aux2 = *aux;
+    while(cheia_coluna(&(aux2->coluna)) && aux2->coluna.tam_logico != -2)
+    {
+        aux2 = aux2->next;
+    }
+    if(aux2->coluna.tam_logico == -2)
+    {
+        criar_nova_linha_na_posicao(linha,linha->num_linhas+1);
+        aux2 = linha->back;
+    }
+    if(controlador.posicao_atual >= 74)
+    {
+        while(aux2->back != *aux)
+        {
+            inserir_posicao_coluna(&(aux2->coluna), aux2->back->coluna.caracter[aux2->back->coluna.tam_logico],0);
+            remover_posicao_coluna(&(aux2->back->coluna),aux2->back->coluna.tam_logico);
+            aux2 = aux2->back;
+        }
+    }
+    else
+    {
+        while(aux2 != *aux)
+        {
+            inserir_posicao_coluna(&(aux2->coluna), aux2->back->coluna.caracter[aux2->back->coluna.tam_logico],0);
+            remover_posicao_coluna(&(aux2->back->coluna),aux2->back->coluna.tam_logico);
+            aux2 = aux2->back;
+        }
+    }
+}
 
 #endif
 

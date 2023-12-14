@@ -14,9 +14,7 @@ void main()
     CONTROLADOR controlador;
     wchar_t caracter;
     fixar_tamanho_console();
-    controlador.linha_atual = 0;
-    controlador.posicao_atual = 0;
-    controlador.insert = -1;
+    inicializar_controlador(&controlador);
     inicializar_linha(&linha);
     //crio a primeira linha
     criar_nova_linha_na_posicao(linha,0);
@@ -37,7 +35,8 @@ void main()
 
     }
     while(caracter != 27);
-
+    /// Dou freenode em todos meu nó
     limpar_estrutura(linha);
+    /// Dou freenode no meu nó cabeçalho
     freenode(linha);
 }

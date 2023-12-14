@@ -7,39 +7,6 @@
 #include "MuriloLopesTela.h"
 #include "MuriloLopesEstrutura.h"
 
-void teste(LINHA **aux, LINHA *linha, CONTROLADOR controlador)
-{
-    LINHA *aux2;
-    aux2 = *aux;
-    while(cheia_coluna(&(aux2->coluna)) && aux2->coluna.tam_logico != -2)
-    {
-        aux2 = aux2->next;
-    }
-    if(aux2->coluna.tam_logico == -2)
-    {
-        criar_nova_linha_na_posicao(linha,linha->num_linhas+1);
-        aux2 = linha->back;
-    }
-    if(controlador.posicao_atual >= 74)
-    {
-        while(aux2->back != *aux)
-        {
-            inserir_posicao_coluna(&(aux2->coluna), aux2->back->coluna.caracter[aux2->back->coluna.tam_logico],0);
-            remover_posicao_coluna(&(aux2->back->coluna),aux2->back->coluna.tam_logico);
-            aux2 = aux2->back;
-        }
-    }
-    else
-    {
-        while(aux2 != *aux)
-        {
-            inserir_posicao_coluna(&(aux2->coluna), aux2->back->coluna.caracter[aux2->back->coluna.tam_logico],0);
-            remover_posicao_coluna(&(aux2->back->coluna),aux2->back->coluna.tam_logico);
-            aux2 = aux2->back;
-        }
-    }
-}
-
 void teclas_especiais(LINHA *linha, LINHA **aux, wchar_t caracter, CONTROLADOR *controlador)
 {
     setlocale(LC_ALL, "Portuguese");
@@ -219,14 +186,14 @@ void teclas_especiais(LINHA *linha, LINHA **aux, wchar_t caracter, CONTROLADOR *
             }
             else
             {
+                controlador->posicao_atual = (*aux)->coluna.tam_logico+1;
                 while((*aux)->next->coluna.tam_logico >= 0 && !cheia_coluna(&(*aux)->coluna))
                 {
                     inserir_posicao_coluna(&(*aux)->coluna, (*aux)->next->coluna.caracter[0],(*aux)->coluna.tam_logico+1);
                     remover_posicao_coluna(&(*aux)->next->coluna,0);
                 }
-                controlador->posicao_atual = (*aux)->coluna.tam_logico+1;
             }
-            if((*aux)->next->coluna.tam_logico < 0)
+            if((*aux)->next->coluna.tam_logico == -1)
             {
                 remove_linha_posicao(linha, controlador->linha_atual+1);
             }
@@ -302,16 +269,16 @@ void teclas_ascii(LINHA *linha, LINHA **aux, wchar_t caracter, CONTROLADOR *cont
                 }
                 else
                 {
+                    controlador->posicao_atual = (*aux)->coluna.tam_logico+1;
                     while((*aux)->next->coluna.tam_logico >= 0 && !cheia_coluna(&(*aux)->coluna))
                     {
                         inserir_posicao_coluna(&(*aux)->coluna, (*aux)->next->coluna.caracter[0],(*aux)->coluna.tam_logico+1);
                         remover_posicao_coluna(&(*aux)->next->coluna,0);
                     }
-                    if((*aux)->next->coluna.tam_logico < 0)
+                    if((*aux)->next->coluna.tam_logico == -1)
                     {
                         remove_linha_posicao(linha, controlador->linha_atual);
                     }
-                    controlador->posicao_atual = (*aux)->coluna.tam_logico+1;
                     controlador->linha_atual--;
                 }
             }
@@ -329,7 +296,7 @@ void teclas_ascii(LINHA *linha, LINHA **aux, wchar_t caracter, CONTROLADOR *cont
         i = 0;
         while(i<3)
         {
-            teste(aux,linha,*controlador);
+            rearranjar_texto(aux,linha,*controlador);
             inserir_posicao_coluna(&(*aux)->coluna,' ',controlador->posicao_atual);
             controlador->posicao_atual++;
             if(controlador->posicao_atual >= 75){
@@ -352,12 +319,12 @@ void teclas_ascii(LINHA *linha, LINHA **aux, wchar_t caracter, CONTROLADOR *cont
                 if(controlador->posicao_atual >= 74)
                 {
                     controlador->linha_atual++;
-                    teste(aux,linha,*controlador);
+                    rearranjar_texto(aux,linha,*controlador);
                     controlador->posicao_atual = 0;
                     (*aux) = (*aux)->next;
                 }
                 else
-                    teste(aux,linha,*controlador);
+                    rearranjar_texto(aux,linha,*controlador);
                 inserir_posicao_coluna(&((*aux)->coluna), caracter, controlador->posicao_atual);
                 controlador->posicao_atual++;
                 exibir_todas_linhas(linha);
@@ -376,7 +343,7 @@ void teclas_ascii(LINHA *linha, LINHA **aux, wchar_t caracter, CONTROLADOR *cont
                     if(controlador->posicao_atual >= 74 || (*aux)->coluna.tam_logico >= TAM - 1)
                     {
                         controlador->linha_atual++;
-                        teste(aux,linha,*controlador);
+                        rearranjar_texto(aux,linha,*controlador);
                         controlador->posicao_atual = 0;
                         (*aux) = (*aux)->next;
                     }

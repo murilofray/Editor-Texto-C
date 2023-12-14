@@ -28,6 +28,12 @@ typedef struct sLinha {
     int num_linhas;
 } LINHA;
 
+///FUNÇÕES CONTROLADOR
+void inicializar_controlador(CONTROLADOR *controlador){
+    controlador->linha_atual = 0;
+    controlador->posicao_atual = 0;
+    controlador->insert = -1;
+}
 ///FUNÇÕES COLUNA
 void inicializar_coluna(COLUNA *coluna) {
     coluna->tam_logico = -1;
