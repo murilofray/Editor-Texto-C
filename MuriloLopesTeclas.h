@@ -269,7 +269,7 @@ void teclas_ascii(LINHA *linha, LINHA **aux, wchar_t caracter, CONTROLADOR *cont
             if(controlador->linha_atual > 0 && controlador->posicao_atual == 0)
             {
                 (*aux) = (*aux)->back;
-                if((*aux)->coluna.tam_logico == -1)
+                if((*aux)->next->coluna.tam_logico == -1)
                 {
                     remove_linha_posicao(linha, controlador->linha_atual);
                     controlador->posicao_atual = (*aux)->coluna.tam_logico+1;
