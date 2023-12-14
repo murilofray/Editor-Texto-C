@@ -26,9 +26,9 @@ void configura_terminal() {
     COORD bufferSize = { colunas, linhas };
     SetConsoleScreenBufferSize(consoleHandle, bufferSize);
 
-    // Definir o tamanho da janela para coincidir com o tamanho do buffer
-    SMALL_RECT windowSize = { 0, 0, colunas - 1, linhas - 1 };
-    SetConsoleWindowInfo(consoleHandle, TRUE, &windowSize);
+//    // Definir o tamanho da janela para coincidir com o tamanho do buffer
+//    SMALL_RECT windowSize = { 0, 0, colunas - 1, linhas - 1 };
+//    SetConsoleWindowInfo(consoleHandle, TRUE, &windowSize);
 }
 
 

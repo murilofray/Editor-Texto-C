@@ -237,9 +237,9 @@ void teclas_ascii(LINHA *linha, LINHA **aux, wchar_t caracter, CONTROLADOR *cont
     int i;
     switch(caracter)
     {
-    case 27:
+    case 27: //ESC
         system("cls");
-        printf("Digite (1) para salvar ou (2) para descartar o texto: ");
+        printf("Digite (1) para salvar ou outra coisa para descartar o texto: ");
         scanf("%d", &escolha);
         if(escolha == 1)
         {
