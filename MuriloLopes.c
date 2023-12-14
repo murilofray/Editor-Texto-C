@@ -13,7 +13,7 @@ void main()
     LINHA *aux;
     CONTROLADOR controlador;
     wchar_t caracter;
-    fixar_tamanho_console();
+    configura_terminal();
     inicializar_controlador(&controlador);
     inicializar_linha(&linha);
     //crio a primeira linha

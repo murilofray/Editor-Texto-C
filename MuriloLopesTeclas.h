@@ -29,6 +29,12 @@ void teclas_especiais(LINHA *linha, LINHA **aux, wchar_t caracter, CONTROLADOR *
 
     case 60: // F2
         salvar_texto(linha);
+        system("cls");
+        printf("TEXTO SALVO\n");
+        system("pause");
+        system("cls");
+        exibir_todas_linhas(linha);
+        meu_gotoxy(controlador);
         break;
 
     case 68: // F10
@@ -42,15 +48,17 @@ void teclas_especiais(LINHA *linha, LINHA **aux, wchar_t caracter, CONTROLADOR *
             (*aux) = linha->back;
             controlador->posicao_atual = (*aux)->coluna.tam_logico+1;
             exibir_todas_linhas(linha);
-            meu_gotoxy(controlador);
         }
         else
         {
             system("pause");
             system("cls");
+            criar_nova_linha_na_posicao(linha,0);
+            (*aux) = linha->next;
             controlador->posicao_atual = 0;
             controlador->linha_atual = 0;
         }
+        meu_gotoxy(controlador);
         break;
     case 71: //HOME
         controlador->posicao_atual = 0;
@@ -311,7 +319,7 @@ void teclas_ascii(LINHA *linha, LINHA **aux, wchar_t caracter, CONTROLADOR *cont
         meu_gotoxy(controlador);
         break;
     default:
-        if(caracter >= 32 && caracter <= 255 && caracter != 173 && (caracter > 160 ||  caracter < 127))
+        if(caracter_valido(caracter))
         {
             system("cls");
             if(controlador->insert == -1)

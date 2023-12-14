@@ -34,9 +34,6 @@ void salvar_linha(COLUNA *coluna, FILE* arquivo, int ultima_linha)
 {
     char caracter;
     int i;
-    if(vazia_coluna(coluna))
-        return;
-
     for (i = 0; i <= coluna->tam_logico; i++)
     {
         caracter = coluna->caracter[i];
@@ -101,10 +98,9 @@ void armazenar_na_estrutura(char *texto, LINHA *linha){
             criar_nova_linha_na_posicao(linha,linha->num_linhas+1);
             aux = aux->next;
         }
-        if(texto[i] != '\n'){
+        else if(texto[i] != '\n'){
             inserir_posicao_coluna(&(aux->coluna),texto[i],aux->coluna.tam_logico+1);
         }
-
     }
 }
 
@@ -173,6 +169,11 @@ void rearranjar_texto(LINHA **aux, LINHA *linha, CONTROLADOR controlador)
             aux2 = aux2->back;
         }
     }
+}
+
+int caracter_valido(int caracter)
+{
+    return caracter >= 32 && caracter <= 255 && caracter != 173 && (caracter > 160 ||  caracter < 127);
 }
 
 #endif

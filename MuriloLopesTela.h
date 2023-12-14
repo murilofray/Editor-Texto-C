@@ -13,9 +13,9 @@ void meu_gotoxy(CONTROLADOR *controlador)
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-void fixar_tamanho_console() {
-    int colunas = 110;
-    int linhas = 30;
+void configura_terminal() {
+    int colunas = 80;
+    int linhas = 10000;
     HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 
     // Desativar o redimensionamento manual
